@@ -6,49 +6,34 @@ from PIL import Image
 
 #A function that calculates the happiness value of the pet
 def calc_happiness_value(data_list):
-    #SVNGS EMFUND DEBT CCARDS MONTHLY_INCOME
     happinesVal=0
-    if data_list[4] !=0:
-        percent_mi_svngs=(data_list[0]/data_list[4])*100
-        dsr=(data_list[2]/data_list[4])*100
-        emfund_calc=data_list[1]/data_list[4]
-        if percent_mi_svngs>100:percent_mi_svngs=100
-        if dsr>100:dsr=100
-        if emfund_calc>100:emfund_calc=100
-    elif data_list[4] ==0:
-        percent_mi_svngs=0
-        dsr=0
-        emfund_calc=0
+    print(data_list)
     #savings
-    if percent_mi_svngs >= 10:happinesVal=happinesVal+3.33
-    elif percent_mi_svngs >= 20:happinesVal=happinesVal+6.66
-    elif percent_mi_svngs >= 30:happinesVal=happinesVal+10
-    elif percent_mi_svngs >= 40:happinesVal=happinesVal+13.33
-    elif percent_mi_svngs >= 50:happinesVal=happinesVal+16.66
-    elif percent_mi_svngs >= 60:happinesVal=happinesVal+20
-    elif percent_mi_svngs >= 70:happinesVal=happinesVal+23.33
-    elif percent_mi_svngs >= 80:happinesVal=happinesVal+26.66
-    elif percent_mi_svngs >= 90:happinesVal=happinesVal+30
-    elif percent_mi_svngs >= 100:happinesVal=happinesVal+33.33
+    if data_list[0] == 0: happinesVal=happinesVal-25
+    if 1<= data_list[0] <=70: happinesVal=happinesVal +10
+    if 71<= data_list[0] <=500: happinesVal=happinesVal +15
+    if 500<= data_list[0]<=1000: happinesVal=happinesVal +20
+    if data_list[0]>1000: happinesVal=happinesVal +25
     #Emergency Fund
-    if emfund_calc >0 and emfund_calc<=1:happinesVal=happinesVal+5.55
-    if emfund_calc>=2:happinesVal=happinesVal+11.11
-    if emfund_calc>=3:happinesVal=happinesVal+15.27
-    if emfund_calc>=4:happinesVal=happinesVal+19.44
-    if emfund_calc>=5:happinesVal+23.61
-    if emfund_calc>=6:happinesVal=happinesVal+27.77
+    if data_list[0] == 0: happinesVal=happinesVal-25
+    if 1<= data_list[1] <=70: happinesVal=happinesVal +10
+    if 71<= data_list[1] <=500: happinesVal=happinesVal +15
+    if 500<= data_list[1]<=1000: happinesVal=happinesVal +20
+    if data_list[1]>1000: happinesVal=happinesVal +25
     #debt
-    if dsr<30:happinesVal=happinesVal+25
-    if dsr==30:happinesVal=happinesVal+12.5
-    if dsr>30:happinesVal=happinesVal+0
+    if data_list[2] ==0:happinesVal=happinesVal+25
+    if 1<= data_list[2] <=70: happinesVal=happinesVal -10
+    if 71<= data_list[2] <=500: happinesVal=happinesVal -15
+    if 500<= data_list[2]<=1000: happinesVal=happinesVal -20
+    if data_list[2]>1000: happinesVal=happinesVal -25
 
     #Credit Cards
-    if data_list[3] >3:happinesVal=happinesVal+0
-    if data_list[3] <= 3: happinesVal=happinesVal+25
+    if data_list[3] == 0:happinesVal=happinesVal+25
+    if 1<= data_list[3] <=3: happinesVal=happinesVal-10
+    if 4<= data_list[3] <=5: happinesVal=happinesVal- 20
+    if data_list[3] >6: happinesVal=happinesVal-25
 
-    if happinesVal>100:
-        happinesVal=100
-    return round(happinesVal)
+    return happinesVal
 
 #Tab View
 
@@ -58,7 +43,7 @@ class DataInputFrame(customtkinter.CTkFrame):
         super().__init__(master, **kwargs)
         font_weight=15
         #configure rows and columns
-        self.rowconfigure((0,6),weight=1)
+        self.rowconfigure((0,5),weight=1)
         self.columnconfigure((0,2),weight=1)
 
         # title label
@@ -68,51 +53,47 @@ class DataInputFrame(customtkinter.CTkFrame):
         #Data Input Fields
         #savings
         self.svngs_label=customtkinter.CTkLabel(self,text="Amount In Savings",font=customtkinter.CTkFont(size=font_weight))
-        self.svngs_textbox=customtkinter.CTkEntry(self,width=100,height=35)
+        self.svngs_textbox=customtkinter.CTkTextbox(self,width=100,height=35)
         self.svngs_label.grid(row=1,column=1)
         self.svngs_textbox.grid(row=1,column=2)
 
         #emergency fund
         self.emfund_label=customtkinter.CTkLabel(self,text="Amount In Emergency Fund",font=customtkinter.CTkFont(size=font_weight))
-        self.emfund_textbox=customtkinter.CTkEntry(self,width=100,height=35)
+        self.emfund_textbox=customtkinter.CTkTextbox(self,width=100,height=35)
         self.emfund_label.grid(row=2,column=1)
         self.emfund_textbox.grid(row=2,column=2)   
 
         #Debt
         self.debt_label=customtkinter.CTkLabel(self,text="Amount of Debt",font=customtkinter.CTkFont(size=font_weight))
-        self.debt_textbox=customtkinter.CTkEntry(self,width=100,height=35)
+        self.debt_textbox=customtkinter.CTkTextbox(self,width=100,height=35)
         self.debt_label.grid(row=4,column=1)
         self.debt_textbox.grid(row=4,column=2)    
 
         #Credit Cards
         self.ccards_label=customtkinter.CTkLabel(self,text="Number of Credit Cards",font=customtkinter.CTkFont(size=font_weight))
-        self.ccards_textbox=customtkinter.CTkEntry(self,width=100,height=35)
+        self.ccards_textbox=customtkinter.CTkTextbox(self,width=100,height=35)
         self.ccards_label.grid(row=5,column=1)
         self.ccards_textbox.grid(row=5,column=2)
 
-        #Monthly Income
-        self.mi_label=customtkinter.CTkLabel(self,text="Monthly Income",font=customtkinter.CTkFont(size=font_weight))
-        self.mi_textbox=customtkinter.CTkEntry(self,width=100,height=35)
-        self.mi_label.grid(row=6,column=1)
-        self.mi_textbox.grid(row=6,column=2)
-
         #prefill data based on saved data from the data.txt file
-        with open("data.txt",'r+') as file:
-            list=file.readline().split("[")[1].split("]")[0].split(",")
-            for x in range(len(list)):
-                list[x]=float(list[x])
-            self.svngs_textbox.insert("0",str(list[0]))
-            self.emfund_textbox.insert("0",str(list[1]))
-            self.debt_textbox.insert("0",str(list[2]))
-            self.ccards_textbox.insert("0",str(list[3]))
-            self.mi_textbox.insert("0",str(list[4]))
+        file=open("data.txt","r+")
+        list=file.readline().split("[")[1].split("]")[0].split(",")
+        for x in range(len(list)):
+            list[x]=float(list[x])
+        file.close()
+        self.svngs_textbox.insert("0.0",str(list[0]))
+        self.emfund_textbox.insert("0.0",str(list[1]))
+        self.debt_textbox.insert("0.0",str(list[2]))
+        self.ccards_textbox.insert("0.0",str(list[3]))
 
     def export_data(self):
-        #SVNGS EMFUND DEBT CCARDS MONTHLY_INCOME
+        #SVNGS EMFUND DEBT CCARDS
+        #this is here to make sure that everything goes good with output so the code doesn't break
         try:
-            return [float(self.svngs_textbox.get()),float(self.emfund_textbox.get()),float(self.debt_textbox.get()),float(self.ccards_textbox.get()),float(self.mi_textbox.get())]
+            if self.svngs_textbox.get("0.0","end").split('\n')[0] !='' and self.emfund_textbox.get("0.0","end").split('\n')[0] != '' and self.debt_textbox.get("0.0","end").split('\n')[0] !='' and self.ccards_textbox.get("0.0","end").split('\n')[0] != '':
+                return[float(self.svngs_textbox.get("0.0","end").split('\n')[0]),float(self.emfund_textbox.get("0.0","end").split('\n')[0]),float(self.debt_textbox.get("0.0", "end").split('\n')[0]),float(self.ccards_textbox.get("0.0", "end").split('\n')[0])]
         except:
-            return [0,0,0,0,0]
+            return [0,0,0,0]
     
 class PetStatsFrame(customtkinter.CTkFrame):
     def __init__(self,master,**kwargs):
@@ -188,9 +169,10 @@ def update_master_function():
 
 # this saves the data into the data.txt file when the program is closed
 def save_on_close():
-    with open("data.txt",'r+') as file:
-        file.truncate()
-        file.write(str(app.dif.export_data()))
+    file_obj=open("data.txt","r+")
+    file_obj.truncate()
+    file_obj.write(str(app.dif.export_data()))
+    file_obj.close()
     sys.exit()
 
 #initialize the app class
